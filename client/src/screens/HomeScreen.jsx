@@ -1,19 +1,20 @@
-import React, { useEffect, useState} from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
+import axios from "axios";
 
 export default function HomeScreen() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    axios
-      .get("https://fakestoreapi.com/products/")
-      .then((respone) => {
-        setProducts(respone.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const fetchProducts = async () => {
+      try {
+        const { data } = await axios.get("/api/products");
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products", error);
+      }
+    };
+    fetchProducts();
   }, []);
   return (
     <Row>
